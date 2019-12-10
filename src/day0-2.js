@@ -9,15 +9,15 @@ class App {
       this.dataset = dataset;
     }
 
-    fullMassCalculation ({mass}){
+    FuelMassCalculation ({mass}){
 
-      let full = Math.floor(mass / 3) - 2;
+      let fuel = Math.floor(mass / 3) - 2;
 
-      if(full < 0){
-        full = 0;
+      if(fuel < 0){
+        fuel = 0;
       }
 
-      return full;
+      return fuel;
     }
 
     async run(){
@@ -28,24 +28,24 @@ class App {
             const masses = data.split("\n");
             console.log(masses);
 
-            let totalFullCumulator = 0;
-            let fullperPart = 0;
+            let totalFuelCumulator = 0;
+            let fuelperPart = 0;
 
-            const totalFull =  masses.reduce( (totalFullCumulator,  mass) =>{
-                let fullPerModule  = this.fullMassCalculation({mass});
+            const totalFuel =  masses.reduce( (totalFuelCumulator,  mass) =>{
+                let fuelPerModule  = this.FuelMassCalculation({mass});
                 
-                let extraFull  = this.fullMassCalculation({mass: fullPerModule});
-                fullPerModule += extraFull;
+                let extraFuel  = this.FuelMassCalculation({mass: fuelPerModule});
+                fuelPerModule += extraFuel;
                 
-                while(extraFull > 0){
-                  extraFull = this.fullMassCalculation({mass: extraFull});
-                  console.log(`Extra full: ${extraFull}  && fullPerModule: ${fullPerModule}`);
-                  fullPerModule += extraFull;
+                while(extraFuel > 0){
+                  extraFuel = this.FuelMassCalculation({mass: extraFuel});
+                  console.log(`Extra Fuel: ${extraFuel}  && FuelPerModule: ${fuelPerModule}`);
+                  fuelPerModule += extraFuel;
                 }
-                return totalFullCumulator + fullPerModule;
+                return totalFuelCumulator + fuelPerModule;
               }, 0);
 
-            console.log(`Full need ${totalFull}`);
+            console.log(`Fuel need ${totalFuel}`);
         }catch(e){
             console.log(e);
             throw e;

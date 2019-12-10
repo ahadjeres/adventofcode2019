@@ -16,15 +16,15 @@ class App {
             const masses = data.split("\n");
             console.log(masses);
 
-            let totalFullCumulator = 0;
-            let fullperPart = 0;
+            let totalFuelCumulator = 0;
+            let fuelperPart = 0;
 
-            const totalFull =  masses.reduce(function (totalFullCumulator,  masse) {
-                fullperPart =  Math.floor(masse / 3) - 2;
-                return totalFullCumulator + fullperPart;
+            const totalFuel =  masses.reduce(function (totalFuelCumulator,  masse) {
+                fuelperPart =  Math.floor(masse / 3) - 2;
+                return totalFuelCumulator + fuelperPart;
               }, 0);
 
-            console.log(`Full need ${totalFull}`);
+            console.log(`Fuel need ${totalFuel}`);
         }catch(e){
             console.log(e);
             throw e;
