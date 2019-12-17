@@ -24,7 +24,26 @@ class App {
             throw e;
         }
     }
+    async nounAndVerbeGenerator({intcodeSet}){
+        for (let noun = 0; noun <= 99; noun ++){
 
+            for (let verbe = 0; verbe <= 99; verbe ++){
+
+                let incodeAttempSet = [...intcodeSet];
+                incodeAttempSet[1] = noun;
+                incodeAttempSet[2] = verbe;
+                
+                let result  =  await this.intcodeExecution({intcodeSet: incodeAttempSet});
+                // console.log(`Result: ${result}`);
+                if(result === 19690720){
+                    return {
+                        noun,
+                        verbe
+                    }
+                }
+            }
+        }
+    }
     async intcodeExecution({intcodeSet}) {
 
         for (let instructionPointer = 0; instructionPointer < intcodeSet.length; instructionPointer += 0){
@@ -45,15 +64,15 @@ class App {
                 instructionPointer ++; 
             }
    
-            console.log(`Instruction set: ${JSON.stringify(instuction, 0, 4)}`);
+            // console.log(`Instruction set: ${JSON.stringify(instuction, 0, 4)}`);
 
             if(instuction.instruction === ADDITION){
                 intcodeSet[instuction.outputAddress] = intcodeSet[instuction.parameterA] + intcodeSet[instuction.parameterB];
-                console.log(`ADD value: ${intcodeSet[instuction.outputAddress]}  @ ADDRESS: ${instuction.outputAddress} VALIDATE: ${intcodeSet[instuction.outputAddress]}`);
+                // console.log(`ADD value: ${intcodeSet[instuction.outputAddress]}  @ ADDRESS: ${instuction.outputAddress} VALIDATE: ${intcodeSet[instuction.outputAddress]}`);
             }
             if(instuction.instruction === MULTIPLICATION){
                 intcodeSet[instuction.outputAddress] = intcodeSet[instuction.parameterA] * intcodeSet[instuction.parameterB];
-                console.log(`MULT value: ${intcodeSet[instuction.outputAddress]}  @ ADDRESS: ${instuction.outputAddress} VALIDATE: ${intcodeSet[instuction.outputAddress]}`);
+                // console.log(`MULT value: ${intcodeSet[instuction.outputAddress]}  @ ADDRESS: ${instuction.outputAddress} VALIDATE: ${intcodeSet[instuction.outputAddress]}`);
             }
             if(instuction.instruction === HALT){
                 return intcodeSet[0];
@@ -67,15 +86,19 @@ class App {
         const intcodeSetString  = rawData.split(',');
         // converte to Int
         const intcodeSet =  intcodeSetString.map(item => Number(item));
-
-        // set initial values
-        intcodeSet[1] = 12;
-        intcodeSet[2] = 2;
     
         //run
-        const result =  await this.intcodeExecution({intcodeSet});
-
-       console.log(`here is the final value ${result}`);
+        try{
+            const result =  await this.nounAndVerbeGenerator({intcodeSet});
+            if(result){
+                console.log(`here is the final NOUN:  ${result.noun} VERBE; ${result.verbe}` );
+            }else{
+                console.log(`no result found`);
+            }
+            
+        }catch(e){
+            throw e;
+        }
 
     }
   }
